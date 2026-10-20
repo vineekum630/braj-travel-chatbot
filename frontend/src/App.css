@@ -178,6 +178,9 @@
 .sidebar-bottom { margin-top: auto; }
 .sidebar-note { display: flex; align-items: center; gap: 8px; padding: 12px 9px; color: #737b71; font: italic 11px/1.5 Georgia, 'Times New Roman', serif; border-top: 1px solid #e1e5dc; }
 .note-dot, .status-dot { width: 7px; height: 7px; flex: 0 0 auto; background: #7b9b75; border-radius: 50%; }
+.api-status-checking { background: #c59a52; }
+.api-status-online { background: #5f9870; }
+.api-status-offline { background: #c76655; }
 .sidebar-credit { padding: 14px 9px 0; color: #a1a59d; font-size: 8px; letter-spacing: 1.1px; }
 .main-panel { display: flex; flex-direction: column; min-height: 100vh; min-width: 0; background: var(--paper); }
 .topbar { height: 66px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid #eceee8; }
