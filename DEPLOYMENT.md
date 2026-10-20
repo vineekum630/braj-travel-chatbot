@@ -60,7 +60,7 @@ Render Free web services sleep after 15 minutes with no inbound traffic; the nex
 1. Make a small code change on a feature branch.
 2. Push the branch and open a pull request to `main`.
 3. GitHub Actions runs frontend lint/build and backend tests. Fix any failed check before merging.
-4. Merge the passing pull request into `main`.
+4. **Review the diff and CI results yourself.** When you approve the change, merge the passing pull request into `main`; no one should merge it automatically on your behalf.
 5. Render sees the new commit, checks GitHub Actions, then builds and deploys the updated services. Watch each service's Events/Logs in Render if a deploy fails.
 
 ## Useful Local Checks
