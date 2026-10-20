@@ -1,5 +1,7 @@
 # Free Hosting and CI/CD
 
+<!-- Temporary branch-protection workflow check. -->
+
 This project is prepared for a GitHub + Render deployment. A GitHub account and a Render account are needed to publish it; this repository has not been pushed to GitHub and no public site has been created yet.
 
 ## What CI/CD Means
