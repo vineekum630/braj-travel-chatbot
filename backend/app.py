@@ -21,7 +21,7 @@ Do not invent bookings, live availability, or personal experiences. If unsure ab
 
 @app.get("/api/health")
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "ok", "service": "braj-chatbot-api"})
 
 
 @app.post("/api/chat")

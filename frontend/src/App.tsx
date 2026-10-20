@@ -4,6 +4,7 @@ import './App.css'
 
 type Message = { role: 'assistant' | 'user'; content: string }
 type Session = { id: string; title: string; messages: Message[] }
+type ApiStatus = 'checking' | 'online' | 'offline'
 
 const greeting: Message = {
   role: 'assistant',
@@ -32,6 +33,7 @@ function App() {
   const [draft, setDraft] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [apiStatus, setApiStatus] = useState<ApiStatus>('checking')
   const [menuOpen, setMenuOpen] = useState(false)
   const endRef = useRef<HTMLDivElement>(null)
   const active = sessions.find((session) => session.id === activeId) ?? sessions[0]
@@ -45,6 +47,30 @@ function App() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [active?.messages, busy])
+
+  useEffect(() => {
+    let isCurrent = true
+
+    async function checkApi() {
+      try {
+        const response = await fetch(`${apiBaseUrl}/api/health`)
+        const data = await response.json() as { status?: string; service?: string }
+        if (!response.ok || data.status !== 'ok' || data.service !== 'braj-chatbot-api') {
+          throw new Error('API health check failed')
+        }
+        if (isCurrent) setApiStatus('online')
+      } catch {
+        if (isCurrent) setApiStatus('offline')
+      }
+    }
+
+    void checkApi()
+    const intervalId = window.setInterval(() => void checkApi(), 30_000)
+    return () => {
+      isCurrent = false
+      window.clearInterval(intervalId)
+    }
+  }, [])
 
   function startNewChat() {
     const session = newSession()
@@ -102,7 +128,7 @@ function App() {
       </aside>
 
       <main className="main-panel">
-        <header className="topbar"><button className="icon-button menu-toggle" aria-label="Open navigation" onClick={() => setMenuOpen(true)}><Menu size={20} /></button><div className="location-label"><MapPin size={15} /> MATHURA & VRINDAVAN</div><div className="guide-status"><span className="status-dot" /> BRAJ GUIDE <span className="status-divider" /> <Sparkles size={14} /> AI</div></header>
+        <header className="topbar"><button className="icon-button menu-toggle" aria-label="Open navigation" onClick={() => setMenuOpen(true)}><Menu size={20} /></button><div className="location-label"><MapPin size={15} /> MATHURA & VRINDAVAN</div><div className="guide-status"><span className={`status-dot api-status-${apiStatus}`} /> API {apiStatus === 'checking' ? 'CHECKING' : apiStatus.toUpperCase()} <span className="status-divider" /> <Sparkles size={14} /> AI</div></header>
         <section className="chat-area">
           <div className="chat-intro"><div className="intro-kicker"><span /> A LITTLE CLOSER TO BRAJ</div><h1>Find your way<br /><em>through Braj.</em></h1><p>Thoughtful routes, temple timings, local rhythms.<br className="desktop-break" /> Let’s make your visit feel like your own.</p></div>
           <div className="messages" aria-live="polite">

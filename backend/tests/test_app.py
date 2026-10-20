@@ -12,7 +12,10 @@ class ChatApiTests(unittest.TestCase):
     def test_health_check(self):
         response = self.client.get("/api/health")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.get_json(), {"status": "ok"})
+        self.assertEqual(
+            response.get_json(),
+            {"status": "ok", "service": "braj-chatbot-api"},
+        )
 
     def test_rejects_missing_messages(self):
         response = self.client.post("/api/chat", json={})
